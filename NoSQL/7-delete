@@ -1,4 +1,4 @@
 // mycomment
-db.school.delete(
+db.school.deleteMany(
     {"name": "Holberton school"}
 )
