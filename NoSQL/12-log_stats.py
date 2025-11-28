@@ -1,35 +1,35 @@
 #!/usr/bin/env python3
-"""It is doc string"""
+"""
+Python script that provides stats about Nginx logs stored in MongoDB
+"""
+
 from pymongo import MongoClient
 
-def log_stats():
-    """It is doc string"""
 
-    try:
-        client = MongoClient("mongodb://localhost:27017/")
-        db = client.logs
-        collections = db.nginx
+try:
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client['logs']
+    collection = db['nginx']
+    
+    # Total number of logs
+    total_logs = collection.count_documents({})
+    print(f"{total_logs} logs")
+    
+    # Methods stats
+    print("Methods:")
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    for method in methods:
+        count = collection.count_documents({"method": method})
+        print(f"\tmethod {method}: {count}")
+    
+    # Status check count
+    status_check = collection.count_documents({"method": "GET", "path": "/status"})
+    print(f"{status_check} status check")
 
-        total_logs = collections.count_documents({})
-        print(f"{total_logs} logs")
-
-        print("Methods:")
-        methods = ["GET","POST","PUT","PATCH","DELETE"]
-
-        for method in methods:
-            number_of_methods = collections.count_documents({"method":method})
-            print(f"\tmethod {method}: {number_of_methods}")
-        
-        check_status = collections.count_documents({"method":"GET","path":"/status"})
-        print(f"{check_status} status check")
-    except Exception:
-        print('0 logs')
-        print("Methods:")
-        methods = ["GET","POST","PUT","PATCH","DELETE"]
-        for method in methods:
-            print(f"\tmethod {method}: 0")
-        print('0 status check')
-
-        
-if __name__ == "__main__":
-    log_stats()
+except Exception as e:
+    print("0 logs")
+    print("Methods:")
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    for method in methods:
+        print(f"\tmethod {method}: 0")
+    print("0 status check")
