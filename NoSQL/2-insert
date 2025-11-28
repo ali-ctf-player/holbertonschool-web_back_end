@@ -1,4 +1,4 @@
 // mycomment
-db.school.insert({
+my_db.school.insert({
     name: "Holberton school"
 });
