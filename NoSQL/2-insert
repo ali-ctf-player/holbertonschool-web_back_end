@@ -1,0 +1,4 @@
+// mycomment
+my_db.school.insertOne({
+    name:"Holberton school"
+})
